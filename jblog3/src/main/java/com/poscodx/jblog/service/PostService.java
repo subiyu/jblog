@@ -1,6 +1,7 @@
 package com.poscodx.jblog.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,13 @@ public class PostService {
 
 	public void addContents(PostVo vo) {
 		postRepository.insert(vo);
+	}
+
+	public List<PostVo> getContentsList(String blogId, Long categoryNo) {
+		return postRepository.findByBlogIdAndCategoryNo(blogId, categoryNo);
+	}
+
+	public PostVo getContents(Long no) {
+		return postRepository.findByNo(no);
 	}
 }

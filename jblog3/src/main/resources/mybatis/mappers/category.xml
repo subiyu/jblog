@@ -20,7 +20,7 @@
 		 	a.description, 
 		 	date_format(a.reg_date, '%Y/%m/%d') as regDate, 
 		 	a.blog_id as blogId, 
-		 	count(*) as postCount 
+		 	count(b.no) as postCount 
 		 FROM category a 
 		 LEFT JOIN post b 
 		 ON a.no = b.category_no 

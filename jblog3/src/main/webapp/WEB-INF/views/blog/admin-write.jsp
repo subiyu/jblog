@@ -23,7 +23,7 @@
 						href="${pageContext.request.contextPath}/${id }/admin/category">카테고리</a></li>
 					<li class="selected">글작성</li>
 				</ul>
-				<form action="${pageContext.request.contextPath}/${id }/write"
+				<form action="${pageContext.request.contextPath}/${id }/admin/write"
 					method="post">
 					<table class="admin-cat-write">
 						<tr>

@@ -10,28 +10,33 @@ public class BlogVo {
 		this.title = title;
 		this.logo = logo;
 	}
-	
-	public String getUserId() {
+
+	public String getId() {
 		return id;
 	}
-	public void setUserId(String userId) {
-		this.id = userId;
+
+	public void setId(String id) {
+		this.id = id;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getLogo() {
 		return logo;
 	}
+
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "BlogVo [userId=" + id + ", title=" + title + ", logo=" + logo + "]";
+		return "BlogVo [id=" + id + ", title=" + title + ", logo=" + logo + "]";
 	}
 }

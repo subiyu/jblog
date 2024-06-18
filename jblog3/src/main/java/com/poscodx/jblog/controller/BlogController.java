@@ -1,5 +1,6 @@
 package com.poscodx.jblog.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,36 +27,64 @@ import com.poscodx.jblog.vo.UserVo;
 @Controller
 @RequestMapping("/{id:(?!assets).*}")
 public class BlogController {
-	private ServletContext servletContext;
 	private BlogService blogService;
 	private PostService postService;
 	private CategoryService categoryService;
 	private FileUploadService fileUploadService;
 
-	public BlogController(ServletContext servletContext, BlogService blogService, PostService postService,
+	public BlogController(BlogService blogService, PostService postService,
 			CategoryService categoryService, FileUploadService fileUploadService) {
-		this.servletContext = servletContext;
 		this.blogService = blogService;
 		this.postService = postService;
 		this.categoryService = categoryService;
 		this.fileUploadService = fileUploadService;
 	}
 
-	@RequestMapping({"", "/{categoryNo}", "/{categoryNo}/{postNo}"})
+	@RequestMapping({"", "/{pathNo1}", "/{pathNo1}/{pathNo2}"})
 	public String index(
 			@AuthUser UserVo authUser,
 			@PathVariable("id") String id,
-			@PathVariable("categoryNo") Optional<Long> categoryNo,
-			@PathVariable("postNo") Optional<Long> postNo,
+			@PathVariable("pathNo1") Optional<Long> pathNo1,
+			@PathVariable("pathNo2") Optional<Long> pathNo2,
 			Model model) {
-		
+		//System.out.println("categoryNo = " + categoryNo);
+		//System.out.println("postNo = " + postNo);
 		BlogVo blogVo = blogService.getBlog(id);
-		List<PostVo> postVoList = postService.getContentsList(id);
-		model.addAttribute("postVo", postVoList.get(0));
+		List<CategoryVo> categoryList = categoryService.getCategoryList(id);
+		List<PostVo> postVoList = new ArrayList<>();
+		PostVo postVo = new PostVo();
+		Long categoryNo = 0L;
+		Long postNo = 0L;
+		
+		if(pathNo2.isPresent()) {
+			categoryNo = pathNo1.get();
+			postNo = pathNo2.get();
+		} else if (pathNo1.isPresent()) {
+			categoryNo = pathNo1.get();
+		}
+		
+		if(categoryNo == 0) { 								// categoryNo == 0 일때 기본 categoryNo 세팅
+			postVoList = postService.getContentsList(id);
+			if(!postVoList.isEmpty()) {
+				postVo = postVoList.get(0);
+			}
+		} else {
+			postVoList = postService.getContentsList(id, categoryNo);
+			if(postNo == 0) {	
+				if(!postVoList.isEmpty()) { 				// postNo == 0 일때 기본 postNo 세팅
+					postVo = postVoList.get(0);
+				}
+			} else {
+				postVo = postService.getContents(postNo);
+			}
+		}
+
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("postVo", postVo);
 		model.addAttribute("blogVo", blogVo);
 		model.addAttribute("owner", authUser.getId().equals(id) ? true : false);
-		postVoList.remove(0);
 		model.addAttribute("list", postVoList);
+		System.out.println("blogVo="+blogVo);
 		
 		return "blog/main";
 	}
