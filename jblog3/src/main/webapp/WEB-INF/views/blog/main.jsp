@@ -14,7 +14,7 @@
 		<c:import url="/WEB-INF/views/includes/blog-header.jsp" />
 		<div id="wrapper">
 			<div id="content">
-				<div class="blog-content">
+				<div class="blog-contoent">
 					<h4>${postVo.title }</h4>
 					<p>
 						${fn:replace(fn:replace(fn:replace(postVo.contents, ">", "&gt;"), "<", "&lt;"), newline, "<br>") }

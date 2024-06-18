@@ -18,4 +18,17 @@ public class CategoryService {
 	public List<CategoryVo> getCategoryList(String blogId) {
 		return categoryRepository.findAll(blogId);
 	}
+
+	public Long getCategoryNo(String categoryName, String blogId) {
+		return categoryRepository.findByNameAndBlogId(categoryName, blogId);
+	}
+
+	public void deleteCategory(long no) {
+		categoryRepository.deleteByNo(no);
+	}
+
+	public void addCategory(CategoryVo vo, String blogId) {
+		vo.setBlogId(blogId);
+		categoryRepository.insert(vo);
+	}
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="category">
-	<insert id="insert" parameterType="map">
+	<insert id="insert" parameterType="categoryvo">
 		<![CDATA[
 		INSERT INTO category VALUES (null, #{name }, #{description }, current_date(), #{blogId })
 		]]>
@@ -15,9 +15,32 @@
 	
 	<select id="findAll" parameterType="string" resultType="categoryvo">
 		<![CDATA[
-		 SELECT no, name, description, date_format(reg_date, '%Y/%m/%d') as regDate, blog_id as blogId 
-		 FROM category 
-		 WHERE blog_id = #{blogId }
+		 SELECT a.no, 
+		 	a.name, 
+		 	a.description, 
+		 	date_format(a.reg_date, '%Y/%m/%d') as regDate, 
+		 	a.blog_id as blogId, 
+		 	count(*) as postCount 
+		 FROM category a 
+		 LEFT JOIN post b 
+		 ON a.no = b.category_no 
+		 WHERE a.blog_id = #{blogId } 
+		 GROUP BY a.no 
+		 ORDER BY a.no desc
 		]]>
 	</select>
+	
+	<select id="findByNameAndBlogId" parameterType="map" resultType="long">
+		<![CDATA[
+		 SELECT no FROM category 
+		 WHERE name = #{categoryName }
+		 AND blog_id = #{blogId }
+		]]>
+	</select>
+	
+	<delete id="deleteByNo" parameterType="long">
+		<![CDATA[
+		DELETE FROM category WHERE no = #{no }
+		]]>
+	</delete>
 </mapper>

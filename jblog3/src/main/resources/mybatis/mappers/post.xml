@@ -13,6 +13,7 @@
 		 FROM post a, category b
 		 WHERE a.category_no=b.no
 		 AND b.blog_id=#{blogId }
+		 ORDER BY a.no desc;
 		]]>
 	</select>
 	

@@ -16,7 +16,13 @@
 		<c:import url="/WEB-INF/views/includes/blog-header.jsp" />
 		<div id="wrapper">
 			<div id="content" class="full-screen">
-				<c:import url="/WEB-INF/views/includes/admin-menu.jsp" />
+				<ul class="admin-menu">
+					<li><a
+						href="${pageContext.request.contextPath}/${id }/admin/basic">기본설정</a></li>
+					<li><a
+						href="${pageContext.request.contextPath}/${id }/admin/category">카테고리</a></li>
+					<li class="selected">글작성</li>
+				</ul>
 				<form action="${pageContext.request.contextPath}/${id }/write"
 					method="post">
 					<table class="admin-cat-write">
@@ -24,9 +30,9 @@
 							<td class="t">제목</td>
 							<td><input type="text" size="60" name="title"> <select
 								name="category">
-								<c:forEach items='${categoryList }' var='vo' varStatus="status">
-									<option>${vo.name }</option>
-								</c:forEach>
+									<c:forEach items='${categoryList }' var='vo' varStatus="status">
+										<option>${vo.name }</option>
+									</c:forEach>
 							</select></td>
 						</tr>
 						<tr>
