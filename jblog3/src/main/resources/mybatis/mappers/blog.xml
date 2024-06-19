@@ -16,7 +16,7 @@
 	
 	<insert id="update" parameterType="blogvo">
 		<![CDATA[
-		UPDATE blog SET title=#{title }, logo=#{logo }
+		UPDATE blog SET title=#{title }, logo=#{logo } WHERE id=#{id }
 		]]>
 	</insert>
 </mapper>

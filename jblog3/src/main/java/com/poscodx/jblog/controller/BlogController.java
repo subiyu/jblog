@@ -84,17 +84,30 @@ public class BlogController {
 		model.addAttribute("blogVo", blogVo);
 		model.addAttribute("owner", authUser.getId().equals(id) ? true : false);
 		model.addAttribute("list", postVoList);
-		System.out.println("blogVo="+blogVo);
 		
 		return "blog/main";
 	}
+
+	@RequestMapping("/admin/basic")
+	public String adminBasic(@AuthUser UserVo authUser, @PathVariable("id") String id, Model model) {		
+		if(authUser.getId().equals(id)) {
+			BlogVo blogVo = blogService.getBlog(id);
+			model.addAttribute("blogVo", blogVo);
+			return "blog/admin-basic";			
+		} else {
+			return "redirect:/" + id;
+		}
+	}
 	
 	@RequestMapping(value="/admin/write", method=RequestMethod.GET)
-	public String write(@PathVariable("id") String blogId, Model model) { 	//여기도 @Auth 필요한가?
-		List<CategoryVo> categoryList = categoryService.getCategoryList(blogId);
-		model.addAttribute("categoryList", categoryList);
-
-		return "blog/admin-write";
+	public String write(@AuthUser UserVo authUser, @PathVariable("id") String blogId, Model model) { 	//여기도 @Auth 필요한가?
+		if(authUser.getId().equals(blogId)) {
+			List<CategoryVo> categoryList = categoryService.getCategoryList(blogId);
+			model.addAttribute("categoryList", categoryList);
+			return "blog/admin-write";			
+		} else {
+			return "redirect:/" + blogId;
+		}
 	}
 	
 	@RequestMapping(value="/admin/write", method=RequestMethod.POST)
@@ -112,17 +125,6 @@ public class BlogController {
 		return "redirect:/" + blogId;
 	}
 	
-	@RequestMapping("/admin/basic")
-	public String adminBasic(@AuthUser UserVo authUser, @PathVariable("id") String id, Model model) {		
-		if(authUser.getId().equals(id)) {
-			BlogVo blogVo = blogService.getBlog(id);
-			model.addAttribute("blogVo", blogVo);
-			return "blog/admin-basic";			
-		} else {
-			return "redirect:/" + id;
-		}
-	}
-	
 	@RequestMapping(value = "/admin/update", method=RequestMethod.POST)
 	public String adminUpdate(@PathVariable("id") String id, BlogVo vo, MultipartFile file) {
 		String profile = fileUploadService.restore(file);
@@ -136,27 +138,39 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/admin/category")
-	public String adminCategory(@PathVariable("id") String id, Model model) {
-		List<CategoryVo> list = categoryService.getCategoryList(id);
-		model.addAttribute("list", list);
-		return "blog/admin-category";
+	public String adminCategory(@AuthUser UserVo authUser, @PathVariable("id") String id, Model model) {
+		if(authUser.getId().equals(id)) {
+			List<CategoryVo> list = categoryService.getCategoryList(id);
+			model.addAttribute("list", list);
+			return "blog/admin-category";
+		} else {
+			return "redirect:/" + id;
+		}
 	}
 	
 	@RequestMapping("/admin/category/delete")
-	public String adminCategoryDelete(@PathVariable("id") String id, String no, String postCount) {
-		if(Integer.parseInt(postCount) > 0) {
+	public String adminCategoryDelete(@AuthUser UserVo authUser, @PathVariable("id") String id, String no, String postCount) {
+		if(authUser.getId().equals(id)) {
+			if(Integer.parseInt(postCount) > 0) {
+				return "redirect:/" + id;
+			}
+			categoryService.deleteCategory(Long.parseLong(no));
+			return "redirect:/\" + id + \"/admin/category";
+		} else {
 			return "redirect:/" + id;
 		}
-		
-		categoryService.deleteCategory(Long.parseLong(no));
-		
-		return "redirect:/" + id + "/admin/category";
 	}
 	
 	@RequestMapping("/admin/category/add")
 	public String adminCategoryAdd(
-			@PathVariable("id") String blogId, CategoryVo vo) {
-		categoryService.addCategory(vo, blogId);
-		return "redirect:/" + blogId + "/admin/category";
+			@AuthUser UserVo authUser, 
+			@PathVariable("id") String blogId, 
+			CategoryVo vo) {
+		if(authUser.getId().equals(blogId)) {
+			categoryService.addCategory(vo, blogId);
+			return "redirect:/\" + blogId + \"/admin/category";
+		} else {
+			return "redirect:/" + blogId;
+		}
 	}
 }
