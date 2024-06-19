@@ -22,5 +22,6 @@
   </build>
   <modules>
   	<module>jblog3</module>
+	<module>jblog4</module>
   </modules>
 </project>
