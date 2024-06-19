@@ -41,6 +41,7 @@
 							<td class="s"><input type="submit" value="기본설정 변경"></td>
 						</tr>
 					</table>
+					<input type="hidden" name="logo" value="${blogVo.logo }">
 				</form>
 			</div>
 		</div>
