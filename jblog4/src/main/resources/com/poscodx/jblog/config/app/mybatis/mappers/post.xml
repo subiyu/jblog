@@ -8,7 +8,7 @@
 		 	a.no, 
 		 	a.title, 
 		 	a.contents, 
-		 	date_format(a.reg_date, '%Y/%m/%d %H:%i:%s') as regDate, 
+		 	date_format(a.reg_date, '%Y/%m/%d') as regDate, 
 		 	a.category_no as categoryNo 
 		 FROM post a, category b
 		 WHERE a.category_no=b.no
@@ -23,7 +23,7 @@
 		 	a.no, 
 		 	a.title, 
 		 	a.contents, 
-		 	date_format(a.reg_date, '%Y/%m/%d %H:%i:%s') as regDate, 
+		 	date_format(a.reg_date, '%Y/%m/%d') as regDate, 
 		 	a.category_no as categoryNo 
 		 FROM post a, category b
 		 WHERE a.category_no=b.no
@@ -39,7 +39,7 @@
 		 	no, 
 		 	title, 
 		 	contents, 
-		 	date_format(reg_date, '%Y/%m/%d %H:%i:%s') as regDate, 
+		 	date_format(reg_date, '%Y/%m/%d') as regDate, 
 		 	category_no as categoryNo 
 		 FROM post 
 		 WHERE no=#{no }
