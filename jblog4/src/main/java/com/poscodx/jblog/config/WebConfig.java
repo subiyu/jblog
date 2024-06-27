@@ -15,10 +15,10 @@ import com.poscodx.jblog.interceptor.LocaleInterceptor;
 
 @Configuration
 @EnableAspectJAutoProxy
+@Import({MvcConfig.class, LocaleConfig.class, SecurityConfig.class, FileUploadConfig.class})
 @ComponentScan({"com.poscodx.jblog.controller", "com.poscodx.jblog.exception"})
-@Import({MvcConfig.class, LocaleConfig.class, SecurityConfig.class})
 public class WebConfig implements WebMvcConfigurer {
-	@Bean
+	/* @Bean
     public HandlerInterceptor localeInterceptor() {
         return new LocaleInterceptor();
     }
@@ -29,5 +29,5 @@ public class WebConfig implements WebMvcConfigurer {
 			.addInterceptor(localeInterceptor())
 			.addPathPatterns("/**")
 			.excludePathPatterns("/assets/**");
-    }
+    } */
 }

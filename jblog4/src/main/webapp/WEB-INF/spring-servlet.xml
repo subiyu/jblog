@@ -10,38 +10,6 @@
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-
-	<mvc:annotation-driven>
-		<!-- Argument Resolver 등록 -->
-		<mvc:argument-resolvers>
-			<bean
-				class="com.poscodx.jblog.security.AuthUserHandlerArgumentResolver" />
-		</mvc:argument-resolvers>
-	</mvc:annotation-driven>
-	
-	<!-- Interceptors -->
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/user/auth" />
-			<bean class="com.poscodx.jblog.security.LoginInterceptor" />
-		</mvc:interceptor>
-		<mvc:interceptor>
-			<mvc:mapping path="/user/logout" />
-			<bean class="com.poscodx.jblog.security.LogoutInterceptor" />
-		</mvc:interceptor>
-	</mvc:interceptors>
-
-	<!-- MessageSource -->
-	<bean id="messageSource"
-		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basenames">
-			<list>
-				<value>messages/messages_ko</value>
-				<value>messages/messages_en</value>
-			</list>
-		</property>
-	</bean>
-
 	<!-- Multipart Resolver -->
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -59,8 +27,5 @@
 		<!-- mvc url-resource mapping -->
 	<mvc:resources mapping="/assets/upload-images/**"
 		location="file:/jblog-uploads/" />
-
-	<context:component-scan
-		base-package="com.poscodx.jblog.controller, com.poscodx.jblog.exception" />
 
 </beans>
