@@ -1,5 +1,7 @@
 package com.poscodx.jblog.controller;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -35,7 +37,7 @@ public class UserController {
 			
 			return "user/join";
 		} */
-		return "redirect:/user/joinsuccess";
+		return "user/joinsuccess";
 	}
 	
 	@RequestMapping(value="/joinsuccess", method=RequestMethod.GET)
@@ -43,18 +45,8 @@ public class UserController {
 		return "user/joinsuccess";
 	}
 	
-	@RequestMapping(value="/login", method=RequestMethod.GET)
+	@RequestMapping(value="/login")
 	public String login() {
 		return "user/login";
-	}
-	
-	@RequestMapping("/auth")
-	public void auth() {
-
-	}
-
-	@RequestMapping("/logout")
-	public void logout() {
-
 	}
 }

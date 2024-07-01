@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.servlet.ServletContext;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.poscodx.jblog.security.AuthUser;
 import com.poscodx.jblog.service.BlogService;
 import com.poscodx.jblog.service.CategoryService;
 import com.poscodx.jblog.service.FileUploadService;
@@ -42,13 +42,12 @@ public class BlogController {
 
 	@RequestMapping({"", "/{pathNo1}", "/{pathNo1}/{pathNo2}"})
 	public String index(
-			@AuthUser UserVo authUser,
+			Authentication authentication,
 			@PathVariable("id") String id,
 			@PathVariable("pathNo1") Optional<Long> pathNo1,
 			@PathVariable("pathNo2") Optional<Long> pathNo2,
 			Model model) {
-		//System.out.println("categoryNo = " + categoryNo);
-		//System.out.println("postNo = " + postNo);
+		UserVo authUser = (UserVo)authentication.getPrincipal();
 		BlogVo blogVo = blogService.getBlog(id);
 		List<CategoryVo> categoryList = categoryService.getCategoryList(id);
 		List<PostVo> postVoList = new ArrayList<>();
@@ -89,7 +88,9 @@ public class BlogController {
 	}
 
 	@RequestMapping("/admin/basic")
-	public String adminBasic(@AuthUser UserVo authUser, @PathVariable("id") String id, Model model) {		
+	public String adminBasic(Authentication authentication, @PathVariable("id") String id, Model model) {	
+		UserVo authUser = (UserVo)authentication.getPrincipal();
+		
 		if(authUser.getId().equals(id)) {
 			BlogVo blogVo = blogService.getBlog(id);
 			model.addAttribute("blogVo", blogVo);
@@ -100,7 +101,9 @@ public class BlogController {
 	}
 	
 	@RequestMapping(value="/admin/write", method=RequestMethod.GET)
-	public String write(@AuthUser UserVo authUser, @PathVariable("id") String blogId, Model model) { 	//여기도 @Auth 필요한가?
+	public String write(Authentication authentication, @PathVariable("id") String blogId, Model model) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
+		
 		if(authUser.getId().equals(blogId)) {
 			List<CategoryVo> categoryList = categoryService.getCategoryList(blogId);
 			model.addAttribute("categoryList", categoryList);
@@ -138,7 +141,9 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/admin/category")
-	public String adminCategory(@AuthUser UserVo authUser, @PathVariable("id") String id, Model model) {
+	public String adminCategory(Authentication authentication, @PathVariable("id") String id, Model model) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
+		
 		if(authUser.getId().equals(id)) {
 			List<CategoryVo> list = categoryService.getCategoryList(id);
 			model.addAttribute("list", list);
@@ -149,7 +154,9 @@ public class BlogController {
 	}
 	
 	@RequestMapping("/admin/category/delete")
-	public String adminCategoryDelete(@AuthUser UserVo authUser, @PathVariable("id") String id, String no, String postCount) {
+	public String adminCategoryDelete(Authentication authentication, @PathVariable("id") String id, String no, String postCount) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
+		
 		if(authUser.getId().equals(id)) {
 			if(Integer.parseInt(postCount) > 0) {
 				return "redirect:/" + id;
@@ -163,9 +170,11 @@ public class BlogController {
 	
 	@RequestMapping("/admin/category/add")
 	public String adminCategoryAdd(
-			@AuthUser UserVo authUser, 
+			Authentication authentication, 
 			@PathVariable("id") String blogId, 
 			CategoryVo vo) {
+		UserVo authUser = (UserVo)authentication.getPrincipal();
+		
 		if(authUser.getId().equals(blogId)) {
 			categoryService.addCategory(vo, blogId);
 			return "redirect:/\" + blogId + \"/admin/category";

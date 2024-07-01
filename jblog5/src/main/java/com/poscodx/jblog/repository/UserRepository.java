@@ -2,9 +2,12 @@ package com.poscodx.jblog.repository;
 
 import java.util.Map;
 
+import org.apache.ibatis.session.ResultContext;
+import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.poscodx.jblog.vo.UserVo;
 
 @Repository
@@ -23,7 +26,26 @@ public class UserRepository {
 		return sqlSession.selectOne("user.findByIdAndPassword", Map.of("id", id, "password", password));
 	}
 
-	public UserVo findById(Long id) {
-		return sqlSession.selectOne("user.findById", id);
+	public <R> R findById(String id, Class<R> resultType) {
+		FindByIdResultHandler<R> findByIdResultHandler = new FindByIdResultHandler<R>(resultType);
+
+		sqlSession.select("user.findById", id, findByIdResultHandler);
+
+		return findByIdResultHandler.result;
+	}
+	
+	private class FindByIdResultHandler<R> implements ResultHandler<Map<String, Object>> {
+		private R result;
+		private Class<R> resultType;
+
+		FindByIdResultHandler(Class<R> resultType) {
+			this.resultType = resultType;
+		}
+
+		@Override
+		public void handleResult(ResultContext<? extends Map<String, Object>> resultContext) {
+			Map<String, Object> resultMap = resultContext.getResultObject();
+			result = new ObjectMapper().convertValue(resultMap, resultType);
+		}
 	}
 }

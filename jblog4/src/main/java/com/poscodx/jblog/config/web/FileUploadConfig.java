@@ -1,4 +1,4 @@
-package com.poscodx.jblog.config;
+package com.poscodx.jblog.config.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

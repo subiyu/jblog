@@ -8,12 +8,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.poscodx.jblog.config.app.DBConfig;
 import com.poscodx.jblog.config.app.MyBatisConfig;
+import com.poscodx.jblog.config.app.SecurityConfig;
 
 @Configuration
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @ComponentScan({"com.poscodx.jblog.service", "com.poscodx.jblog.repository"})
-@Import({DBConfig.class, MyBatisConfig.class})
+@Import({DBConfig.class, MyBatisConfig.class, SecurityConfig.class})
 public class AppConfig {
 
 }

@@ -1,4 +1,4 @@
-package com.poscodx.jblog.config;
+package com.poscodx.jblog.config.app;
 
 import java.util.List;
 
