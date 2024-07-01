@@ -1,0 +1,49 @@
+# spring configuration
+spring:
+   application:
+      name: jblog
+   
+   # devtools - live reload
+   devtools:
+      livereload:
+         enable: true
+   
+   # aop
+   aop:
+      auto: true
+      proxy-target-class: true
+      
+   # mvc
+   mvc:
+      view:
+         prefix: /WEB-INF/views/
+         suffix: .jsp
+         
+   # datasource
+   datasource:
+      driver-class-name: org.mariadb.jdbc.Driver
+      url: jdbc:mariadb://192.168.0.193:3306/jblog?charset=utf8
+      #url: jdbc:mariadb://192.168.35.55:3306/jblog?charset=utf8
+      #url: jdbc:mariadb://172.20.10.11:3306/jblog?charset=utf8
+      username: jblog
+      password: jblog
+      hikari:
+         minimum-idle: 10
+         maximum-pool-size: 20
+
+# mybatis
+mybatis:
+   config-location: classpath:mybatis/configuration.xml
+   
+# server configuration
+server:
+   port: 8088
+   servlet:
+      context-path: /jblog6
+      encoding: 
+         charset: utf-8
+         enabled: true
+         
+# logging
+logging:
+   config: classpath:logback.xml
