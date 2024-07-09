@@ -7,10 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Internal Server Error(500) : Custom</h1>
-	<hr>
-	<pre style="color: #fe1100">
-${error }
-	</pre>
+	<h1>Forbidden(403) : Custom</h1>
+	<p>접근할 수 없습니다.</p>
 </body>
 </html>

@@ -131,6 +131,7 @@ public class BlogController {
 	@RequestMapping(value = "/admin/update", method=RequestMethod.POST)
 	public String adminUpdate(@PathVariable("id") String id, BlogVo vo, MultipartFile file) {
 		String profile = fileUploadService.restore(file);
+		System.out.println("profile" + profile);
 		if(profile != null) {
 			vo.setLogo(profile);
 		}

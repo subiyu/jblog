@@ -15,9 +15,20 @@ spring:
       
    # mvc
    mvc:
-      view:
-         prefix: /WEB-INF/views/
-         suffix: .jsp
+      static-path-pattern: /assets/**
+      throw-exception-if-no-handler-found: true
+         
+   # web
+   web:
+      resources:
+         static-locations: file:/jblog-uploads/, classpath:assets/
+        
+   # multipart
+   servlet:
+      multipart:
+         enabled: true
+         max-file-size: 50MB
+         max-request-size: 10MB
          
    # datasource
    datasource:
@@ -43,6 +54,10 @@ server:
       encoding: 
          charset: utf-8
          enabled: true
+   error:
+      whitelabel:
+         enabled: false
+      path: /error
          
 # logging
 logging:
